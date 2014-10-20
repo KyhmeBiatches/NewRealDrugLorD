@@ -47,8 +47,9 @@ public class AIPath : MonoBehaviour {
 	 * The AI will try to follow/move towards this target.
 	 * It can be a point on the ground where the player has clicked in an RTS for example, or it can be the player object in a zombie game.
 	 */
-	public Transform target;
-	
+    public Transform target;
+	public List<Transform> targets;
+    private int currentTargetIndex;
 	/** Enables or disables searching for paths.
 	 * Setting this to false does not stop any active path requests from being calculated or stop it from continuing to follow the current path.
 	 * \see #canMove
@@ -168,6 +169,8 @@ public class AIPath : MonoBehaviour {
 	 * \see RepeatTrySearchPath
 	 */
 	protected virtual void Start () {
+        Debug.Log("CurrentIndex = " + currentTargetIndex);
+
 		startHasRun = true;
 		OnEnable ();
 	}
@@ -256,6 +259,21 @@ public class AIPath : MonoBehaviour {
 		//add it here
 		//You can also create a new script which inherits from this one
 		//and override the function in that script
+        int tarCount = targets.Count;
+        if(tarCount - 1 == currentTargetIndex)
+        {
+            Debug.Log("KOM IND I IF!!!");
+            //targetReached = false;
+            currentTargetIndex = 0;
+            target = targets[currentTargetIndex];
+        }
+        else {
+            Debug.Log("yo bøssse");
+            //targetReached = false;
+            currentTargetIndex = currentTargetIndex + 1;
+            Debug.Log("Targets count" + targets.Count + " Index " + currentTargetIndex);
+            target = targets[currentTargetIndex];
+        }
 	}
 	
 	/** Called when a requested path has finished calculation.
